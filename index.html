@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><meta charset="utf-8"><title>
+SelfAssessmentApp
+</title></head>
+
+<link rel="stylesheet" type="text/css" href="css.css">
+
+<body>
+
+<table align="center" width=800px>
+<tr><td align="center">
+<h2 class="d">Preparations</h2>
+</td></tr>
+<tr><td>
+<p class="a">$ sudo apt-get install apache2 gem rails ruby ruby-full sqlite3 nodejs yarnpkg</p><br>
+<p class="a">$ sudo gem install rails execjs therubyrhino</p> <p class="b">#install prerequisites via apt</p><br>
+<p class="a">$ rails new applicationName</p> <p class="b">#create new app <i>applicationName</i></p><br>
+<p class="a">$ cd applicationName</p><br>
+<p class="a">$ bin/rails server</p> <p class="b">#create puma webapp on localhost:3000</p><br>
+<p class="a">$ firefox localhost:3000</p> <p class="b">#check server status</p><br>
+<p class="b">#like ASP.NET and Java, rails is a Model, View and Controller framework</p><br>
+<p class="b">#while we just need a <i>Controller, Action and View</i> to have a functional app,</p><br>
+<p class="b">#we'll need a <i>Model, View and Controller</i> to fully utilize the core foundation of rails</p>
+</td></tr>
+<tr><td align="center">
+<h2 class="d">Routing</h2>
+</td></tr>
+<tr><td>
+<p class="a">$ nano config/routes.rb</p> <p class="b">#add new route to <i>routes.rb</i></p><br>
+
+<p class="e">Rails.application.routes.draw do</p><br>
+<p class="b">#user input is defined as a request to the <i>request_handlers</i> controller</p><br>
+<p class="d">&emsp;root "request_handlers#index"</p><br>
+<p class="b">#this will point our <i>controller</i> and <i>action</i> combination of the<br>
+<p class="b">#line below to domainroot, or localhost:3000/ instead of /request_handlers</p><br>
+<p class="d">&emsp;get "/request_handlers", to: "request_handlers#index"</p><br>
+<p class="e">end</p><br>
+<p class="b">#the controller's action in this case is <i>index</i></p><br>
+<p class="b">#take note <i>request_handlers</i> is lowercase and contains an underscore here</p><br>
+<p class="a">$ firefox <a href="https://guides.rubyonrails.org/routing.html">https://guides.rubyonrails.org/routing.html</a></p> <p class="b">#complete guide to routing</p><br>
+</td></tr>
+<tr><td align="center">
+<h2 class="d">Generating Controller</h2>
+</td></tr>
+<tr><td>
+<p class="a">$ bin/rails generate controller RequestHandlers index</p><br>
+<p class="b">#generates one <i>helper</i>, two <i>controller</i> and two <i>view</i> <a href="gen_control.html" target="outc">files</a></p><br>
+<p class="b">#check how <i>RequestHandlers</i> gets re-formatted in the files/dirs generated</p><br>
+<iframe width=100% height=200 name="outc" src="blank_b.html"></iframe>
+<p class="a">$ cat app/controllers/request_handlers_controller.rb</p><br>
+<p class="e">class RequestHandlersController &lt; ApplicationController</p><br>
+<p class="e">&ensp;def index</p><br>
+<p class="e">&ensp;end</p><br>
+<p class="e">end</p><br>
+<p class="b">#empty <i>index</i> actions create a default <i>view</i> matching the controller and action's names</p><br>
+<p class="b">#also notice the capitalization in the <i>request_handlers_controller.rb</i> code</p><br>
+<p class="a">$ echo "&lt;h1&gt;Static content!&lt;/h1&gt;" > app/views/request_handlers/index.html.erb</a><br>
+<p class="b">#with this, we've met the minimum requirements for a functioning rails app because</p><br>
+<p class="b">#we have one or more controller, action and view-- but now for dynamic content!</p>
+
+</td></tr>
+<tr><td align="center">
+<h2 class="d">Generating/Migrating Models</h2>
+</td></tr>
+<tr><td>
+<p class="a">$ bin/rails generate model RequestHandler column_two:string column_three:text</p><br>
+<p class="b">#this will create several <a href="gen_model.html" target="model">files</a>, but let's begin by examining the new migration file,</p><br>
+<p class="b">#a script file which modifies the structure of any given database</p><br>
+<p class="a">$ cat db/migrate/&lt;timestamp&gt;_create_request_handlers.rb</p><br>
+<p class="e">class CreateRequestHandlers &lt; ActiveRecord::Migration[7.0]</p><br>
+<p class="e">&ensp;def change</p><br>
+<p class="e">&emsp;create_table :request_handlers do |t|</p><br>
+<p class="b">#the <i>create_table</i> method defines the structure of our <i>request_handlers</i> table</p><br>
+<p class="b">#the first column <i>id</i> is automatically generated and acts as a simple row counter</p><br>
+<p class="b">#MySQL equivalent: CREATE TABLE request_handlers (id INT PRIMARY KEY AUTO_INCREMENT);</p><br>
+<p class="e">&emsp;&emsp;t.string :column_two</p><br>
+<p class="e">&emsp;&emsp;t.text :column_three</p><br>
+<p class="b">#the next two columns we defined in our <i>generate model</i> command</p<br>
+<p class="b">#MySQL equivalent: ALTER TABLE request_handlers ADD column_two VARCHAR ...</p>
+<br>
+<p class="e">&emsp;&emsp;t.timestamps</p><br>
+<p class="b">#the t.timestamps method will add two columns, created_at and updated_at</p><br>
+<p class="b">#which will be maintained by rails</p><br>
+<p class="e">&emsp;end</p><br>
+<p class="e">&ensp;end</p><br>
+<p class="e">end</p><br>
+<p class="a">$ bin/rails db:migrate</p><br>
+<p class="b">#after approving the migration file, we can <a href="migrate.html" target="model">migrate</a> the new structure to the</p><br>
+<p class="b">#database, then begin interacting with the updated database</p><br>
+<p class="a">$ firefox <a href="https://guides.rubyonrails.org/active_record_migrations.html">https://guides.rubyonrails.org/active_record_migrations.html</a></p> <p class="b">#more info</p><br>
+<iframe width=100% src="blank.html" name="model" src="blank_a.html" height=150></iframe>
+</td></tr>
+<tr><td align="center">
+<div id="ci">
+<h2 class="d">Console Interaction</h2>
+</div>
+</td></tr>
+<tr><td>
+<p class="a">$ bin/rails console</p><br>
+<p class="a">:: Loading development environment (Rails 7.0.2.3)</p><br>
+<p class="b">#the rails console allows us to interact with the database in real time</p></br>
+<p class="a">irb(main):001:0&gt; firstObject = RequestHandler.new(column_two: "clever", column_three: "amusing")</p><br>
+<p class="b">#001 will <a href="console.out.1.html" target="railsoutput">initialize</a> the new object for the session's duration</p><br>
+<p class="a">irb(main):002:0&gt; firstObject.save</p><br>
+<p class="b">#002 will <a href="console.out.2.html" target="railsoutput">save</a> it permanently</p><br>
+<p class="a">irb(main):003:0&gt; firstObject</p><br>
+<p class="b">#003 outputs the <a href="console.out.3.html" target="railsoutput">contents</a> of the object queried</p><br>
+<p class="a">irb(main):004:0&gt; secondObject = RequestHandler.new(column_two: "wontsave", column_three: "onlyinit")</p><br>
+<p class="b">#004 [initialized, unsaved] has a <a href="console.out.4.html" target="railsoutput">similar output</a> to 001</p><br>
+<p class="a">irb(main):005:0&gt; secondObject</p><br>
+<p class="b">#005 performs the same query as 003, but as it's not saved, the <a href="console.out.5.html" target="railsoutput">output</a> is incomplete</p><br>
+<p class="a">irb(main):006:0&gt; thirdObject</p><br>
+<p class="b">#006 an un-initialized object will throw an <a href="console.out.6.html" target="railsoutput">error</a>, as it should</p><br>
+<p class="a">irb(main):007:0&gt; RequestHandler.find(2)</p><br>
+<p class="b">#007 the <i>find</i> action queries the <a href="console.out.7.html" target="railsoutput">object</a> with the matching id</p><br>
+<p class="a">irb(main):008:0&gt; RequestHandler.all</p><br>
+<p class="b">#008 the <i>all</i> action will query <a href="console.out.8.html" target="railsoutput">all the objects</a> and display their contents</p><br>
+<iframe width=100% src="blank.html" name="railsoutput" src="blank.html" height=275></iframe>
+</td></tr>
+<tr><td align="center">
+<h2 class="d">Modifying Actions</h2>
+</td></tr>
+<tr><td>
+<p class="a">$ nano app/controllers/request_handlers_controller.rb</p><br>
+<p class="e">class RequestHandlersController < ApplicationController</p>
+<p class="e">&ensp;def index<br>
+<p class="d">&emsp;@request_handlers = RequestHandler.all<br>
+<p class="b">#with the "@" symbol denoting an instance variable that's remains constant throughout its class</p><br>
+<p class="b">#we change the behavior of action <i>index</i> and allow it to display all data within the</p><br>
+<p class="b">#RequestHandler object database</p><br>
+<p class="e">&ensp;end<br>
+<p class="e">end</p><br>
+<p class="a">$ nano app/views/request_handlers/index.html.erb</p><br>
+<p class="e">&lt;h3&gt;This is an *.erb template.&lt;h3&gt;</p><br>
+<p class="e">&lt;p&gt;A hybrid between the two languages, *.erb files combine the lightweight structure of HTML</p><br>
+<p class="e">&lt;p&gt;and the ultra-secure and low-impact methods found in Rails.&lt;/p&gt;</p><br>
+<p class="b">#with *.erb templates, one can integrate rapid database querying and high-level, server-side</p><br>
+<p class="b">#processing seamlessly, with confidence they're utilizing a platform with the highest security rating of any!</p><br>
+<p class="e">&lt;% With an Embedded Ruby Tag such as this one %&gt;</p><br>
+<p class="b">#Ruby functions, queries and server calls can be executed in sync with HTML forms and instances.</p><br>
+<p class="e">&lt;%= Adding an equals sign to the beginning tag will further enable you to output %&gt;</p><br>
+<p class="b">#directly from Ruby methods to the web interface you and your clients use!</p><br>
+<br>
+<p class="a">$ Feel free to comment on this quickstart guide your tips and tricks to make Ruby on Rails work harder for you!</p>
+</td></tr>
+<tr><td align="center">
+<h2 class="d">Summary</h2>
+</td></tr>
+<tr><td>
+<h3 class="f">Topics Covered</h3>
+<ul>
+<li> <p class="f">Necessary Tools, Plugins and Libraries</p>
+<li> <p class="f">Puma Server Instantiation</p>
+<li> <p class="f">Rails CLI Basics</p>
+<li> <p class="f">Model, View and Controller Methodology</p>
+<li> <p class="f">Controller to Action Relationship</p>
+<li> <p class="f">Intro to Routing via config/routes.rb</p>
+<li> <p class="f">File Processing via Predefined Constructs</p>
+<li> <p class="f">Framework-Specific Terminology</p>
+<li> <p class="f">Ruby Syntax and Fundamentals</p>
+<li> <p class="f">Databases, Objects and Models</p>
+<li> <p class="f">Intro to Rails Development Console</p>
+<li> <p class="f">Variables and Pointers</p>
+<li> <p class="f">Integration with HTML</p>
+</ul>
+</td></tr>
+</table>
+
+</body>
+</html>
+</html>

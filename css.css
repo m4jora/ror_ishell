@@ -1,0 +1,45 @@
+body { background-color: #41ead4; }
+td { background-color: #a3f5ea; }
+tr, td {
+border: 4px ridge #ff0022;
+border-radius: 8px;
+}
+td.c { text-align: "center"; }
+p, a, h2 {
+font-family: sans-serif;
+text-decoration: none;
+font-weight: bold;
+text-shadow: 1px 1px black;
+display: inline;
+}
+.e { color: #fdfffc; }
+.f { 
+font-weight: bold;
+font-family: sans-serif;
+color: #191716;
+text-shadow: 1px 1px #e0e2db,
+-1px 1px #e0e2db,
+-1px -1px #e0e2db,
+1px -1px #e0e2db;
+}
+
+
+.b { 
+color: #011627;
+text-shadow: -1px -1px #fff,
+	1px 1px #999;
+}
+.d { 
+color: #b91372;
+text-shadow: 0px -1px #fff,
+1px 1px black;
+}
+.a { 
+color: #63d471; 
+text-shadow: -1px -1px #000,
+1px 1px black,
+-1px 1px #000,
+1px -1px #000;
+}
+a { color: #ff0022; }
+a:hover { color: yellow; }
